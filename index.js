@@ -104,6 +104,7 @@ class Autocomplete extends Component {
 
     return (
       <ListView
+        ref={"resultList"}
         dataSource={dataSource}
         keyboardShouldPersistTaps="always"
         renderRow={renderItem}
@@ -132,8 +133,10 @@ class Autocomplete extends Component {
       hideResults,
       inputContainerStyle,
       listContainerStyle,
-      onShowResults
+      onShowResults,
+      onStartShouldSetResponderCapture
     } = this.props;
+
     const showResults = dataSource.getRowCount() > 0;
 
     // Notify listener if the suggestion will be shown.
@@ -145,7 +148,9 @@ class Autocomplete extends Component {
           {this.renderTextInput()}
         </View>
         {!hideResults && (
-          <View style={listContainerStyle}>
+          <View
+          onStartShouldSetResponderCapture={() => {onStartShouldSetResponderCapture ? onStartShouldSetResponderCapture(this.refs.resultList); : console.log('onStartShouldSetResponderCapture is not defined');}}
+          style={listContainerStyle}>
             {showResults && this.renderResultList()}
           </View>
         )}
